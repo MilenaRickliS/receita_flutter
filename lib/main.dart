@@ -55,7 +55,10 @@ class FavoritosPage extends StatelessWidget {
           return ListTile(
             title: Text(receita['nome']!),
             subtitle: Text(receita['descricao']!),
-            leading: Image.asset(receita['imagem']!, width: 50, height: 50, fit: BoxFit.cover),
+            leading: Hero(
+              tag: receita['imagem']!, 
+              child: Image.asset(receita['imagem']!, width: 50, height: 50, fit: BoxFit.cover),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -341,14 +344,18 @@ class DetalhesReceita extends StatelessWidget {
             children: <Widget>[
               Hero(
                 tag: receita['imagem']!, 
-                child: Container(
-                  width: 700,
-                  height: 550,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                      image: AssetImage(receita['imagem']!),
-                      fit: BoxFit.cover,
+                transitionOnUserGestures: true,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    width: 500,
+                    height: 500,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      image: DecorationImage(
+                        image: AssetImage(receita['imagem']!),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
