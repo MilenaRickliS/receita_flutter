@@ -236,14 +236,17 @@ class _MenuReceitasState extends State<MenuReceitas> {
         children: <Widget>[
           Hero(
             tag: receita['imagem']!, 
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: DecorationImage(
-                  image: AssetImage(receita['imagem']!),
-                  fit: BoxFit.cover,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  image: DecorationImage(
+                    image: AssetImage(receita['imagem']!),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -254,9 +257,15 @@ class _MenuReceitasState extends State<MenuReceitas> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: 10),
-                Text(
-                  receita['nome']!,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Hero(
+                  tag: 'recipe_name_${receita['nome']}',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      receita['nome']!,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 10),
                 Text(
@@ -324,12 +333,18 @@ class DetalhesReceita extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          receita['nome']!,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
+        title: Hero(
+          tag: 'recipe_name_${receita['nome']}',
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              receita['nome']!,
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
           ),
         ),
         backgroundColor: Color.fromARGB(255, 252, 248, 215),
