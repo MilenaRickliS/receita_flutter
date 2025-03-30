@@ -53,7 +53,11 @@ class FavoritosPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final receita = favoritos[index];
           return ListTile(
-            title: Text(receita['nome']!),
+            
+            title: Hero(
+                  tag: 'recipe_name_${receita['nome']}',
+                  child: Text(receita['nome']!),
+            ),
             subtitle: Text(receita['descricao']!),
             leading: Hero(
               tag: receita['imagem']!, 
@@ -62,8 +66,21 @@ class FavoritosPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => DetalhesReceita(receita: receita),
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return DetalhesReceita(receita: receita);
+                  },
+                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                    // Usando FadeTransition com a duração personalizada
+                    var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeInOut,
+                      ),
+                    );
+                    return FadeTransition(opacity: fadeAnimation, child: child);
+                  },
+                  transitionDuration: Duration(seconds: 1), // Duração da transição
                 ),
               );
             },
@@ -278,10 +295,24 @@ class _MenuReceitasState extends State<MenuReceitas> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => DetalhesReceita(receita: receita),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return DetalhesReceita(receita: receita);
+                        },
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          // Usando FadeTransition com a duração personalizada
+                          var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                          );
+                          return FadeTransition(opacity: fadeAnimation, child: child);
+                        },
+                        transitionDuration: Duration(seconds: 1), // Duração da transição
                       ),
                     );
+
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 72, 41, 30),
