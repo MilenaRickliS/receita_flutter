@@ -71,7 +71,7 @@ class FavoritosPage extends StatelessWidget {
                     return DetalhesReceita(receita: receita);
                   },
                   transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    // Usando FadeTransition com a duração personalizada
+                    
                     var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
                       CurvedAnimation(
                         parent: animation,
@@ -80,7 +80,7 @@ class FavoritosPage extends StatelessWidget {
                     );
                     return FadeTransition(opacity: fadeAnimation, child: child);
                   },
-                  transitionDuration: Duration(seconds: 1), // Duração da transição
+                  transitionDuration: Duration(seconds: 1), 
                 ),
               );
             },
@@ -300,7 +300,7 @@ class _MenuReceitasState extends State<MenuReceitas> {
                           return DetalhesReceita(receita: receita);
                         },
                         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          // Usando FadeTransition com a duração personalizada
+                          
                           var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
                               parent: animation,
@@ -309,7 +309,7 @@ class _MenuReceitasState extends State<MenuReceitas> {
                           );
                           return FadeTransition(opacity: fadeAnimation, child: child);
                         },
-                        transitionDuration: Duration(seconds: 1), // Duração da transição
+                        transitionDuration: Duration(seconds: 1), 
                       ),
                     );
 
