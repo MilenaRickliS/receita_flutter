@@ -231,14 +231,17 @@ class _MenuReceitasState extends State<MenuReceitas> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 250,
-            height: 250,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              image: DecorationImage(
-                image: AssetImage(receita['imagem']!),
-                fit: BoxFit.cover,
+          Hero(
+            tag: receita['imagem']!, 
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                  image: AssetImage(receita['imagem']!),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -336,14 +339,17 @@ class DetalhesReceita extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: 700,
-                height: 550,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: AssetImage(receita['imagem']!),
-                    fit: BoxFit.cover,
+              Hero(
+                tag: receita['imagem']!, 
+                child: Container(
+                  width: 700,
+                  height: 550,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    image: DecorationImage(
+                      image: AssetImage(receita['imagem']!),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
