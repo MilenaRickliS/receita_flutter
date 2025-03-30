@@ -448,8 +448,21 @@ class _NovaReceitaPageState extends State<NovaReceitaPage> {
                     widget.onAdd(novaReceita);
                     Navigator.pop(context);
                   }
+                  
                 },
-                child: Text('Adicionar Receita'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 72, 41, 30),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text('Adicionar Receita',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),),
               ),
             ],
           ),
