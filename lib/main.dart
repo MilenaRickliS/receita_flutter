@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:receita_flutter/detalhes.dart';
+import 'package:receita_flutter/favoritos.dart';
+import 'package:receita_flutter/adicionar.dart';
+import 'package:receita_flutter/editar.dart';
 import 'dart:async'; 
 
 void main() {
@@ -27,68 +31,6 @@ class MenuReceitas extends StatefulWidget {
 
   @override
   _MenuReceitasState createState() => _MenuReceitasState();
-}
-class FavoritosPage extends StatelessWidget {
-  final List<Map<String, String>> favoritos;
-
-  const FavoritosPage({super.key, required this.favoritos});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Favoritos',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 32,
-          ),
-        ),
-        backgroundColor: Color.fromARGB(255, 228, 224, 193),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
-        itemCount: favoritos.length,
-        itemBuilder: (context, index) {
-          final receita = favoritos[index];
-          return ListTile(
-            
-            title: Hero(
-                  tag: 'recipe_name_${receita['nome']}',
-                  child: Text(receita['nome']!),
-            ),
-            subtitle: Text(receita['descricao']!),
-            leading: Hero(
-              tag: receita['imagem']!, 
-              child: Image.asset(receita['imagem']!, width: 50, height: 50, fit: BoxFit.cover),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) {
-                    return DetalhesReceita(receita: receita);
-                  },
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                    
-                    var fadeAnimation = Tween(begin: 0.0, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeInOut,
-                      ),
-                    );
-                    return FadeTransition(opacity: fadeAnimation, child: child);
-                  },
-                  transitionDuration: Duration(seconds: 1), 
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
 }
 
 
@@ -340,6 +282,25 @@ class _MenuReceitasState extends State<MenuReceitas> {
                       onPressed: () => _toggleFavorito(receita),
                     ),
                     IconButton(
+                      icon: Icon(Icons.edit, color: Colors.black54),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditarReceitaPage(
+                              receita: receita,
+                              onEdit: (updatedReceita) {
+                                setState(() {
+                                  final index = receitas.indexWhere((r) => r['nome'] == receita['nome']);
+                                  receitas[index] = updatedReceita;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    IconButton(
                       icon: Icon(Icons.delete, color: Colors.black54),
                       onPressed: () => _removerReceita(receita),
                     ),
@@ -349,177 +310,6 @@ class _MenuReceitasState extends State<MenuReceitas> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-
-class DetalhesReceita extends StatelessWidget {
-  final Map<String, String> receita;
-
-  const DetalhesReceita({super.key, required this.receita});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Hero(
-          tag: 'recipe_name_${receita['nome']}',
-          child: Material(
-            color: Colors.transparent,
-            child: Text(
-              receita['nome']!,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ),
-        ),
-        backgroundColor: Color.fromARGB(255, 252, 248, 215),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Hero(
-                tag: receita['imagem']!, 
-                transitionOnUserGestures: true,
-                child: Material(
-                  color: Colors.transparent,
-                  child: Container(
-                    width: 500,
-                    height: 500,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      image: DecorationImage(
-                        image: AssetImage(receita['imagem']!),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Ingredientes:',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Text(
-                receita['detalhes']!,
-                style: TextStyle(fontSize: 17),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 72, 41, 30),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text(
-                  'Voltar',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class NovaReceitaPage extends StatefulWidget {
-  final Function(Map<String, String>) onAdd;
-
-  const NovaReceitaPage({super.key, required this.onAdd});
-
-  @override
-  State<NovaReceitaPage> createState() => _NovaReceitaPageState();
-}
-
-class _NovaReceitaPageState extends State<NovaReceitaPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _nomeController = TextEditingController();
-  final _descricaoController = TextEditingController();
-  final _ingredientesController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Nova Receita'),
-        backgroundColor: Color.fromARGB(255, 228, 224, 193),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _nomeController,
-                decoration: InputDecoration(labelText: 'Nome da Receita'),
-                validator: (value) => value!.isEmpty ? 'Informe o nome' : null,
-              ),
-              TextFormField(
-                controller: _descricaoController,
-                decoration: InputDecoration(labelText: 'Descrição'),
-                validator: (value) => value!.isEmpty ? 'Informe a descrição' : null,
-              ),
-              TextFormField(
-                controller: _ingredientesController,
-                decoration: InputDecoration(labelText: 'Ingredientes e Preparo'),
-                validator: (value) => value!.isEmpty ? 'Informe os ingredientes' : null,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final novaReceita = {
-                      'nome': _nomeController.text,
-                      'descricao': _descricaoController.text,
-                      'imagem': 'assets/receitas.jpg',
-                      'detalhes': _ingredientesController.text,
-                    };
-                    widget.onAdd(novaReceita);
-                    Navigator.pop(context);
-                  }
-                  
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 72, 41, 30),
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: Text('Adicionar Receita',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
