@@ -10,7 +10,7 @@ void main(){
         'detalhes': 'Ingredients: Avocado, lime, salt.'
       },
       onEdit: (Map<String, String> updatedReceita) {
-        // Handle updated recipe
+        
         print('Receita atualizada: $updatedReceita');
       },
     ),
@@ -36,7 +36,7 @@ class _EditarReceitaPageState extends State<EditarReceitaPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize the controllers with current recipe details
+    
     _nomeController = TextEditingController(text: widget.receita['nome']);
     _descricaoController = TextEditingController(text: widget.receita['descricao']);
     _ingredientesController = TextEditingController(text: widget.receita['detalhes']);
